@@ -1,0 +1,24 @@
+{
+  "name": "@vitoremanoel/rasphome",
+  "version": "1.0.0",
+  "description": "Rasphome",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/VitorEmanoel/Rasphome"
+  },
+  "keywords": [
+    "rasphome",
+    "node-js",
+    "raspberry-pi"
+  ],
+  "author": "VitorEmanoel",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "@linclark/pkg": "^1.0.3",
+    "mongodb": "^3.1.3"
+  }
+}
