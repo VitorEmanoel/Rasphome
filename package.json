@@ -1,6 +1,6 @@
 {
   "name": "@vitoremanoel/rasphome",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Rasphome",
   "main": "index.js",
   "scripts": {
