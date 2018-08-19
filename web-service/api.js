@@ -22,7 +22,7 @@ module.exports = function(req, res){
                     })
                     console.log(myconsole.colormessage('[GET] ', myconsole.colors.green) +"Sensores enviados para " + req.connection.remoteAddress)
                 }else if(paths.length == 4){
-
+                    console.log(paths[3])
                 }
             }else if(req.method == "POST"){
                 if(paths[2] == 'sensors'){
