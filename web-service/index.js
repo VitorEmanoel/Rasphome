@@ -1,7 +1,7 @@
 const http = require('http')
-const cwd = process.argv[1]
-const api = require(cwd + "/web-service/api")
-const myconsole = require(cwd + '/utils/console')
+const api = require("../web-service/api")
+const config = require('../config.json')
+const myconsole = require('../utils/console')
 let server
 
 server = http.createServer(function(req, res){

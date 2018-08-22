@@ -1,7 +1,6 @@
 const MongoClient = require('mongodb').MongoClient
-const cwd = process.argv[1]
-const config = require(cwd +'/config.json')
-const myconsole = require(cwd + '/utils/console')
+const config = require('../config.json')
+const myconsole = require('../utils/console')
 var database
 var url = "mongodb://" + config.mongodb.host + ":" + config.mongodb.port + "/"
 
