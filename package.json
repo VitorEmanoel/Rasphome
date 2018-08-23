@@ -6,10 +6,14 @@
   "scripts": {
     "test": "node test.js"
   },
+  "bin": {
+    "rasphome": "./bin/rasphome.js"
+  },
   "repository": {
     "type": "git",
     "url": "github.com/VitorEmanoel/Rasphome"
   },
+  "preferGlobal": true,
   "keywords": [
     "rasphome",
     "node-js",
