@@ -9,3 +9,10 @@ myconsole.clear()
 myconsole.setcolor(myconsole.colors.white)
 webservice.start()
 mongodb.open()
+
+process.on('SIGINT', function(){
+    myconsole.clear()
+    mongodb.close()
+    webservice.stop()
+    process.exit()
+})
