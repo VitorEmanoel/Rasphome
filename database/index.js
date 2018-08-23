@@ -7,7 +7,7 @@ var cclient
 
 function open(){
     console.log(myconsole.colormessage('[Database] ', myconsole.colors.yellow) +'Conectando...')
-    MongoClient.connect(url, { useNewUrlParser: true }, function(err, client){
+    MongoClient.connect(url, function(err, client){
         if(err){
             throw err
         }
