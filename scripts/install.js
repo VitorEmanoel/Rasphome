@@ -1,6 +1,6 @@
 const fs = require('fs')
 
-fs.writeFile('/var/runn/rasphome.pid', '', function(err){
+fs.writeFile('/var/run/rasphome.pid', '', function(err){
     if(err)throw err
     console.log('Arquivo PID criado com sucesso!')
 })
