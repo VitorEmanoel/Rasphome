@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "node ./scripts/test.js",
-    "install": "node ./scripts/install.js"
+    "install": "sudo node ./scripts/install.js"
   },
   "bin": {
     "rasphome": "./bin/rasphome.js"
