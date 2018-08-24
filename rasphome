@@ -1,0 +1,16 @@
+#!/bin/bash
+
+iniciar(){
+	sudo rasphome
+}
+
+parar(){
+	sudo killall -TERM rasphome
+}
+
+case "$1" in 
+	"start") iniciar ;;
+	"stop") parar ;;
+	"restart") parar; iniciar;;
+	*) echo "Use start, stop, or restart";
+esac

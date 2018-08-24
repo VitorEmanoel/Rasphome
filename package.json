@@ -4,7 +4,8 @@
   "description": "Rasphome",
   "main": "index.js",
   "scripts": {
-    "test": "node test.js"
+    "test": "node ./scripts/test.js",
+    "install": "node ./scripts/install.js"
   },
   "bin": {
     "rasphome": "./bin/rasphome.js"
