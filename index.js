@@ -11,7 +11,7 @@ if(process.argv[2] == 'deamon' && process.arch == 'arm' && process.platform == '
         mstring = mstring.substring(0,mstring.length - modulo_path[modulo_path.length - 1].length)
         console.log(mstring)
     }
-    fs.writeFile('/etc/init.d/rasphome', fs.readFileSync(mstring + 'rasphome'), function(err){
+    fs.writeFile('/etc/init.d/rasphome', fs.readFileSync(mstring + '/rasphome'), function(err){
         if(err) throw err
         console.log('Deamon criado com sucesso!')
     })
