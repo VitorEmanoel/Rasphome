@@ -1,6 +1,6 @@
 {
   "name": "rasphome",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Rasphome",
   "main": "index.js",
   "scripts": {
