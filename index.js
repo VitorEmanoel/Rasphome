@@ -4,15 +4,6 @@ const mongodb = require('./database')
 const fs = require('fs')
 process.title = 'rasphome'
 
-if(process.argv[2] == 'deamon' && process.arch == 'arm' && process.platform == 'linux'){
-    fs.writeFile('/etc/init.d/rasphome', fs.readFileSync('/usr/local/lib/node_modules/rasphome/rasphome'), function(err){
-        if(err) throw err
-        console.log('Deamon criado com sucesso!')
-    })
-    
-    process.exit()
-}
-
 process.on("SIGTERM", function(){
     stop()
 })
