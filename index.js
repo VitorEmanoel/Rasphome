@@ -14,19 +14,12 @@ function start(){
     myconsole.setcolor(myconsole.colors.white)
     webservice.start()
     mongodb.open()
-    fs.writeFile('/var/run/rasphome.pid', process.pid, function(err){
-        if(err)throw err
-    })
 }
 
 function stop(){
     myconsole.clear()
     mongodb.close()
     webservice.stop()
-    fs.writeFile('/var/run/rasphome.pid', '', function(err){
-        if(err) throw err
-        console.log('PID limpo com sucesso.')
-    })
     process.exit(0)
 }
 if(process.arch == 'arm' && process.platform == 'linux'){
