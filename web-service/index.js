@@ -3,9 +3,8 @@ const api = require("../web-service/api")
 const config = require('../config.json')
 const myconsole = require('../utils/console')
 const colors = myconsole.colors
-let server
 
-server = http.createServer(function(req, res){
+let server = http.createServer(function(req, res){
     try{
         api(req, res)
     }catch(e){
@@ -35,7 +34,3 @@ function stop(){
     server.close()
     console.log(myconsole.colormessage('[WebService] ', myconsole.colors.yellow) + 'Desligado com sucesso ' + myconsole.colormessage('[OK]', myconsole.colors.green))
 }
-
-
-
-

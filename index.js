@@ -23,8 +23,8 @@ function stop(){
     process.exit(0)
 }
 if(process.arch == 'arm' && process.platform == 'linux'){
-    start()
 }else{
     console.log('Somente pode ser usado por Raspberry Pi')
-    process.exit()
+    //process.exit()
 }
+start()
