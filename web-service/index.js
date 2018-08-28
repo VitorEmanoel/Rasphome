@@ -1,5 +1,5 @@
 const http = require('http')
-const api = require("../web-service/api")
+const api = require("./api")
 const config = require('../config.json')
 const myconsole = require('../utils/console')
 const colors = myconsole.colors

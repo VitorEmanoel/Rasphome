@@ -6,12 +6,14 @@ module.exports.GET = function(db, path, callback){
             if(err) callback(err)
             callback(null, result)
         })
-    }else if(paths.length == 4){
-        var objectId = new ObjectID(path[3])
-        db.find({'_id':  objectId}).toArray(function(err, result){
-            if(err) callback(err)
-            callback(null, result)
-        })
+    }else if(path.length == 4){
+        if(path[3] !== ''){
+            var objectId = new ObjectID(path[3])
+            db.find({'_id':  objectId}).toArray(function(err, result){
+                if(err) callback(err)
+                callback(null, result)
+            })
+        }
     }
 }
 
