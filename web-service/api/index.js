@@ -13,28 +13,51 @@ module.exports = function(req, res){
             var collection = mongodb.getDB().collection(paths[2])
             if(req.method == 'GET'){
                 controller.GET(collection, paths, function(err, result){
+                    if(err){
+                        res.writeHead(404)
+                        res.end()
+                        return
+                    }
                     res.writeHead(200, {'Content-Type' : 'application/json'})
                     res.end(JSON.stringify(result))
                 })
                 return
             }else if(req.method == 'POST'){
-                controller.POST(collection, req)
-                res.writeHead(200)
-                res.end()
+                controller.POST(collection, req, function(err){
+                    if(err){
+                        res.writeHead(404)
+                        res.end()
+                        return
+                    }
+                    res.writeHead(201)
+                    res.end()
+                })
                 return
             }else if(req.method == 'PUT'){
-                controller.PUT(collection, paths, req)
-                res.writeHead(200)
-                res.end()
+                controller.PUT(collection, paths, req, function(err){
+                    if(err){
+                        res.writeHead(404)
+                        res.end()
+                        return
+                    }
+                    res.writeHead(200)
+                    res.end()
+                })
                 return
             }else if(req.method == 'DELETE'){
-                controller.DELETE(collection, paths)
-                res.writeHead(200)
-                res.end()
+                controller.DELETE(collection, paths, function(err){
+                    if(err){
+                        res.writeHead(404)
+                        res.end()
+                        return
+                    }
+                    res.writeHead(200)
+                    res.end()
+                })
                 return
             }
         }
+        res.writeHead(404)
+        res.end()
     }
-    res.writeHead(404)
-    res.end()
 }
