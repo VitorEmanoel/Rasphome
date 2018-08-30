@@ -5,14 +5,7 @@ const myconsole = require('../utils/console')
 const colors = myconsole.colors
 
 let server = http.createServer(function(req, res){
-    try{
-        api(req, res)
-    }catch(e){
-        console.log(myconsole.colormessage('[ERROR] ', colors.red) + 'Ocorreu um erro durante a uma requisão de ' + req.connection.remoteAddress)
-        console.log(myconsole.colormessage('[ERROR] ', colors.red) + 'Erro: ' + e)
-        res.writeHead(400)
-        res.end()
-    }
+    api(req, res)
 
 })
 

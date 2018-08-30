@@ -1,7 +1,6 @@
 const webservice = require('./web-service')
 const myconsole = require('./utils/console')
 const mongodb = require('./database')
-const fs = require('fs')
 process.title = 'rasphome'
 
 process.on("SIGTERM", function(){
