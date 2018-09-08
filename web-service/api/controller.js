@@ -1,12 +1,12 @@
 const ObjectID = require('mongodb').ObjectID
 
 module.exports.GET = function(db, path, callback){
-    if(path.length == 3){
+    if(path.length === 3){
         db.find({}).toArray(function(err, result){
             if(err) return callback(err)
             callback(null, result)
         })
-    }else if(path.length == 4){
+    }else if(path.length === 4){
         if(!path[3]){
             return callback(new Error("Not found"))
         }
@@ -23,7 +23,7 @@ module.exports.GET = function(db, path, callback){
 }
 
 module.exports.POST = function(db, req, callback){
-    var post_data = []
+    let post_data = []
     req.on('data', function(data){
         post_data.push(data)
     })
@@ -33,7 +33,7 @@ module.exports.POST = function(db, req, callback){
         }catch(err){
             return callback(err)
         }
-        var validatedJson = validadePOSTinput(json)
+        let validatedJson = validadePOSTinput(json)
         if(!validatedJson){
             return callback(new Error('Invalid'))
         }
@@ -50,7 +50,7 @@ module.exports.POST = function(db, req, callback){
 }
 
 module.exports.PUT = function(db, path, req, callback){
-    if(path.length == 4 && path[3]){
+    if(path.length === 4 && path[3]){
         try{
             var objectId = new ObjectID(path[3])
         }catch(err){
@@ -74,7 +74,7 @@ module.exports.PUT = function(db, path, req, callback){
 }
 
 module.exports.DELETE = function(db, path, callback){
-    if(path.length == 4 && path[3]){
+    if(path.length === 4 && path[3]){
         try{
             var objectId = new ObjectID(path[3])
         }catch(err){
@@ -101,10 +101,10 @@ function validatePUTinput(data){
 }
 
 function validadePOSTinput(data){
-    var post_return = null
+    let post_return = null
     if(Array.isArray(data)){
         post_return = []
-        for(var i = 0; i < data.length; i++){
+        for(let i = 0; i < data.length; i++){
             if(data[i].name && data[i].pin){
                 post_return.push({"name": data[i].name, "pin": data[i].pin})
             }

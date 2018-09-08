@@ -21,7 +21,7 @@ function stop(){
     webservice.stop()
     process.exit(0)
 }
-if(process.arch == 'arm' && process.platform == 'linux'){
+if(process.arch === 'arm' && process.platform === 'linux'){
     start()
 }else{
     console.log('Somente pode ser usado por Raspberry Pi')
