@@ -1,4 +1,4 @@
-const webservice = require('../web-service');
+const webservice = require('../web');
 const myconsole = require('../utils/console');
 const mongodb = require('../database');
 process.title = 'rasphome';
@@ -20,7 +20,7 @@ function start(){
     myconsole.move(0,0);
     myconsole.clear();
     myconsole.setcolor(myconsole.colors.white);
-    webservice.start();
+    webservice.start()
     mongodb.open()
 }
 

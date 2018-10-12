@@ -23,7 +23,9 @@
   "license": "GPL-3.0",
   "dependencies": {
     "express": "^4.16.3",
-    "mongodb": "^2.2.34"
+    "http-errors": "^1.7.1",
+    "mongodb": "^2.2.34",
+    "twig": "^1.12.0"
   },
   "devDependencies": {}
 }

@@ -1,6 +1,7 @@
-const webservice = require('./web-service');
+const webservice = require('./web');
 const myconsole = require('./utils/console');
 const mongodb = require('./database');
+
 process.title = 'rasphome';
 
 process.on("SIGTERM", function(){
@@ -25,6 +26,7 @@ function stop(){
     webservice.stop();
     process.exit(0)
 }
+
 if(process.arch === 'arm' && process.platform === 'linux'){
     start()
 }else{
