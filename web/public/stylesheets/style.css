@@ -1,0 +1,37 @@
+.Topbar{
+    background-color: blueviolet;
+    display: flex;
+    flex-direction: row;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    height: 50px;
+    left: 0;
+    font-size: 25px;
+    line-height: 25px;
+    width: 100%;
+}
+
+.login-box-button{
+    margin: 0 auto;
+}
+
+.login-box-in{
+    display: flex;
+    flex-direction: row;
+}
+
+.login-box{
+    margin: 0 auto;
+    border: black solid 1px;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-button{
+    padding: 10px;
+}
+
+.menu-button{
+
+}
