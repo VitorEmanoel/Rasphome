@@ -4,27 +4,25 @@ const database = require("../../database");
 
 let router = express.Router();
 
-router.get("/", function(req, res){
-    res.header("Content-Type", "application/json");
+router.get("/", (req, res) =>{
     let collection = database.getDB().collection('actuators');
     controller.GET(collection, null, function(err, result){
         if(err) throw err;
-        res.send(JSON.stringify(result));
+        res.send({"actuators": result});
         res.status(200).end();
     });
 });
 
-router.get("/:id", function (req, res) {
-    res.header("Content-Type", "application/json");
+router.get("/:id", (req, res) =>{
     let collection = database.getDB().collection('actuators');
     controller.GET(collection, req.params.id, function(err, result){
         if(err) throw err;
-        res.send(JSON.stringify({"actuators" : result}));
+        res.send(result);
         res.status(200).end();
     })
 });
 
-router.post("/", function (req, res) {
+router.post("/", (req, res) =>{
     let collection = database.getDB().collection('actuators');
     controller.POST(collection, req.body, function(err){
         if(err) throw err;
@@ -32,7 +30,7 @@ router.post("/", function (req, res) {
     })
 });
 
-router.delete("/:id", function (req, res) {
+router.delete("/:id", (req, res) =>{
     let collection = database.getDB().collection('actuators');
     controller.DELETE(collection, req.params.id, function(err){
         if(err) throw err;
@@ -40,7 +38,7 @@ router.delete("/:id", function (req, res) {
     });
 });
 
-router.put("/:id", function (req, res) {
+router.put("/:id", (req, res) =>{
     let collection = database.getDB().collection('actuators');
     controller.PUT(collection, req.params.id, req.body, function(err){
         if(err) throw err;

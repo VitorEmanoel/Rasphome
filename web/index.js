@@ -7,30 +7,43 @@ const path = require('path');
 const actuatorsRouter = require('./routes/actuators');
 const sensorsRouter = require('./routes/sensors');
 const indexRouter = require("./routes/index");
+const roomsRouter = require("./routes/rooms");
 
 let app = express();
 
 let server;
 
+let middlewareLog = (req, res, next) => {
+    console.log(new Date() + ' ' + req.method + ' ' + req.connection.remoteAddress + ' ' + req.url);
+    next();
+};
+
+let cors = (req, res, next) =>{
+    res.header("Access-Control-Allow-Origin", "*");
+    next();
+};
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'twig');
-
+app.use(middlewareLog);
+app.use(cors);
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use("/", indexRouter);
 app.use("/api/actuators", actuatorsRouter);
 app.use("/api/sensors", sensorsRouter);
+app.use("/api/rooms", roomsRouter);
 
 app.use(function(req, res, next) {
     next(createError(404));
 });
 
-app.use(function(err, req, res, next){
+app.use((err, req, res, next) =>{
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
     res.status(err.status || 500);
     res.render('error');
+    console.error(err.toString());
 });
 
 function start(){
