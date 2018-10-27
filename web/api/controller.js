@@ -17,7 +17,7 @@ module.exports.GET = function(db, id, callback){
 
     db.find({'_id': objectId}).toArray(function(err, result){
         if(err) return callback(err);
-        callback(null, result);
+        callback(null, result[0]);
     });
 };
 

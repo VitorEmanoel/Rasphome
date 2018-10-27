@@ -23,6 +23,23 @@ router.get("/:id", (req, res) => {
     });
 });
 
+router.get("/:id/devices", (req, res) =>{
+    let db = database.getDB().collection("rooms");
+    controller.GET(db, req.params.id, (err, result) =>{
+       if(err) throw err;
+       res.send({"devices": result.devices});
+       res.status(200).end();
+    });
+});
+
+router.get("/:id/devices/:pid", (req, res) =>{
+   let db = database.getDB().collection("rooms");
+   controller.GET(db, req.params.id, (err, result) =>{
+       if(err) throw err;
+       res.send(result.devices.find(device => {return device.id === req.params.pid}));
+   });
+});
+
 router.post("/", async (req, res) =>{
     let db = database.getDB().collection("rooms");
     await roomController.POST(db, req.body, (err) =>{
@@ -31,7 +48,7 @@ router.post("/", async (req, res) =>{
     });
 });
 
-router.post("/:id", async (req, res) =>{
+router.post("/:id/devices", async (req, res) =>{
    let db = database.getDB().collection("rooms");
    await roomController.IMPORT(db, req.params.id , req.body, (err) =>{
       if(err) throw err;
@@ -48,9 +65,9 @@ router.delete("/:id", (req, res) =>{
     });
 });
 
-router.patch("/:id", (req, res) =>{
+router.delete("/:id/devices/:pid", (req, res) =>{
    let db = database.getDB().collection("rooms");
-   roomController.REMOVE(db, req.params.id, req.body.id, (err)=>{
+   roomController.REMOVE(db, req.params.id, req.params.pid, (err)=>{
         if(err) throw err;
         res.status(200).end();
    });
