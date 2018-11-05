@@ -1,37 +1,31 @@
-const MongoClient = require('mongodb').MongoClient;
-const config = require('../config.json');
+const mongoose = require("mongoose");
 const myconsole = require('../utils/console');
-let database;
-let url = "mongodb://" + config.mongodb.host + ":" + config.mongodb.port + "/";
-let cclient;
+const colors = myconsole.colors;
 
-function open(){
-    console.log(myconsole.colormessage('[Database] ', myconsole.colors.yellow) +'Conectando...');
-    try {
-        MongoClient.connect(url, function (err, client) {
-            if (err) {
-                throw err
-            }
-            cclient = client;
-            database = client.db('rasphome');
-            console.log(myconsole.colormessage('[Database] ', myconsole.colors.yellow) + 'Conectado com sucesso ' + myconsole.colormessage('[OK]', myconsole.colors.green));
-        })
-    }catch(e){
-        console.log(myconsole.colormessage('[Database] ', myconsole.colors.yellow)+'Ocorreu um erro ao se conectar com o banco de dados');
-        console.log(myconsole.colormessage('[Erro] ', myconsole.colors.red) + e.toString())
-    }
+const url = `mongodb://localhost/rasphome`;
+mongoose.Promise = global.Promise;
+mongoose.set('useCreateIndex', true);
+
+
+function start() {
+    console.log(myconsole.colormessage('[Database] ', colors.yellow) + 'Iniciando...');
+    mongoose.connect(url, {useNewUrlParser: true}).then(() => {
+        console.log(myconsole.colormessage('[Database] ', colors.yellow) + 'Iniciado com sucesso ' + myconsole.colormessage('[OK]', colors.green))
+    }).catch((err) => {
+        console.log("Ocorreu um erro ao conectar com o banco de dados");
+        console.error((err.message));
+    });
 }
 
-function getDB(){
-    return database
+function stop(){
+    console.log(myconsole.colormessage('[Database] ', colors.yellow) + 'Desligando...');
+    mongoose.disconnect().catch((err)=>{
+       console.error("Ocorreu um erro ao desconectar do banco de dados ");
+       console.error(err);
+    });
+    console.log(myconsole.colormessage('[Database] ', colors.yellow) + 'Desligando...');
+
 }
 
-function close(){
-    console.log(myconsole.colormessage('[Database] ', myconsole.colors.yellow) +'Desconectando...');
-    cclient.close();
-    console.log(myconsole.colormessage('[Database] ', myconsole.colors.yellow) + 'Desconectado com sucesso ' + myconsole.colormessage('[OK]', myconsole.colors.green));
-}
-
-module.exports.open = open;
-module.exports.close = close;
-module.exports.getDB = getDB;
+module.exports.stop = stop;
+module.exports.start = start;

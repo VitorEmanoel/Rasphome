@@ -1,3 +1,4 @@
+require('dotenv').config();
 const myconsole = require('../utils/console');
 const colors = myconsole.colors;
 const createError = require('http-errors');
@@ -14,7 +15,8 @@ let app = express();
 let server;
 
 let middlewareLog = (req, res, next) => {
-    console.log(new Date() + ' ' + req.method + ' ' + req.connection.remoteAddress + ' ' + req.url);
+    let date = new Date();
+    console.log(`[${date.getDay()}/${date.getMonth()}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}] ${req.method} ${req.connection.remoteAddress} ${req.url}`);
     next();
 };
 
@@ -28,6 +30,7 @@ app.set('view engine', 'twig');
 app.use(middlewareLog);
 app.use(cors);
 app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use("/", indexRouter);
 app.use("/api/actuators", actuatorsRouter);
@@ -40,15 +43,16 @@ app.use(function(req, res, next) {
 
 app.use((err, req, res, next) =>{
     res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
+    res.locals.error = process.env.MODE === 'development' ? err : {};
     res.status(err.status || 500);
     res.render('error');
     console.error(err.toString());
 });
 
 function start(){
-    console.log(myconsole.colormessage('[WebService] ', colors.yellow) + 'Iniciando...');
-    server = app.listen(80, function(err){
+    myconsole.resetcolor();
+    console.log(myconsole.colormessage('[WebService] ', colors.yellow) + 'Iniciado... ');
+    server = app.listen(process.env.PORT, (err) =>{
         if(err){
             throw err;
         }

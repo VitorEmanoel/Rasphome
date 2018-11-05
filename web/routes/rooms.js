@@ -1,76 +1,112 @@
 const express = require('express');
-const roomController = require("../api/roomController");
-const controller = require("../api/controller");
-const database = require("../../database");
+const Rooms = require('../../database/models/rooms');
 
 let router = express.Router();
 
-router.get("/", (req, res) =>{
-    let db = database.getDB().collection("rooms");
-    controller.GET(db, null, (err, result)=>{
-        if(err) throw err;
-        res.send({"rooms": result});
-        res.status(200).end();
-    });
-});
-
-router.get("/:id", (req, res) => {
-    let db = database.getDB().collection("rooms");
-    controller.GET(db, req.params.id, (err, result) =>{
-        if(err) throw err;
-        res.send(result);
-        res.status(200).end()
-    });
-});
-
-router.get("/:id/devices", (req, res) =>{
-    let db = database.getDB().collection("rooms");
-    controller.GET(db, req.params.id, (err, result) =>{
-       if(err) throw err;
-       res.send({"devices": result.devices});
-       res.status(200).end();
-    });
-});
-
-router.get("/:id/devices/:pid", (req, res) =>{
-   let db = database.getDB().collection("rooms");
-   controller.GET(db, req.params.id, (err, result) =>{
-       if(err) throw err;
-       res.send(result.devices.find(device => {return device.id === req.params.pid}));
-   });
-});
-
-router.post("/", async (req, res) =>{
-    let db = database.getDB().collection("rooms");
-    await roomController.POST(db, req.body, (err) =>{
-       if(err) throw err;
-       res.status(201).end();
-    });
-});
-
-router.post("/:id/devices", async (req, res) =>{
-   let db = database.getDB().collection("rooms");
-   await roomController.IMPORT(db, req.params.id , req.body, (err) =>{
-      if(err) throw err;
-      res.status(201).end();
-   });
+router.get("/", async(req, res) =>{
+    try{
+        const rooms = await Rooms.find().populate(['devices']);
+        res.send({rooms});
+    }catch(err){
+        console.log(err);
+        res.status(400).send({error : "Error in find rooms"})
+    }
 
 });
 
-router.delete("/:id", (req, res) =>{
-    let db = database.getDB().collection("rooms");
-    controller.DELETE(db, req.params.id, (err) =>{
-        if(err) throw err;
-        res.status(200).end();
-    });
+router.get("/:id", async(req, res) => {
+    try{
+        const room = await Rooms.findOne({_id:req.params.id}).populate(['devices']);
+        if(!room)
+            return res.status(404).send({error: "Room not found"});
+        res.send(room);
+    }catch(err){
+        console.log(err);
+        res.status(400).send({error : "Error in find rooms"});
+    }
+
 });
 
-router.delete("/:id/devices/:pid", (req, res) =>{
-   let db = database.getDB().collection("rooms");
-   roomController.REMOVE(db, req.params.id, req.params.pid, (err)=>{
-        if(err) throw err;
-        res.status(200).end();
-   });
+router.get("/:id/devices", async(req, res) =>{
+
+    try{
+        const room = await Rooms.findOne({_id:req.params.id}).populate(['devices']);
+        if(!room)
+            return res.status(404).send({error: "Room not found"});
+        const { devices } = room;
+        res.send({devices});
+    }catch(err){
+        res.status(400).send({error: "Error in find rooms devices"})
+    }
+
+});
+
+router.post("/", async(req, res) =>{
+
+    try{
+        const { name, devices } = req.body;
+        const room = await Rooms.create({name});
+        if(devices) {
+            await Promise.all(devices.map(async device => {
+                await room.devices.push(device.id);
+            }));
+            await room.save();
+        }
+        res.status(201).send(room);
+    }catch(err){
+        console.log(err);
+        res.status(400).send({error: "Error in create room"});
+    }
+});
+
+router.post("/:id/devices", async(req, res) =>{
+    try{
+        const room = await Rooms.findOne({_id:req.params.id});
+        if(!room)
+            return res.status(404).send({error: "Room not found"});
+        const { devices } = req.body;
+        await Promise.all(devices.map(async device =>{
+            room.devices.push(device.id);
+        }));
+        await room.save();
+        const rooms = await Rooms.findOne({_id:req.params.id}).populate('device');
+        res.status(201).send({rooms});
+    }catch(err){
+        console.log(err);
+        res.status(400).send({error: "Error in create room device"});
+    }
+});
+
+router.delete("/:id", async(req, res) =>{
+    try{
+        if(!await Rooms.findById(req.params.id))
+            return res.status(404).send({error : "Room not found"});
+        await Rooms.deleteOne({_id: req.params.id});
+        const rooms = Rooms.find().populate('device');
+        res.send({rooms});
+    }catch(err){
+        res.status(400).send({error: "Error in delete room"});
+    }
+
+});
+
+router.delete("/:id/devices/:pid", async(req, res) =>{
+
+    try{
+        const room = await Rooms.findOne({_id:req.params.id});
+        if(!room)
+            return res.status(404).send({error : "Room not found"});
+        if(!room.devices.includes(req.params.id))
+            return res.status(404).send({error : "Device not found"});
+        room.devices.pull(req.params.pid);
+        room.save();
+        res.send(await Rooms.findOne({_id:req.params.id}))
+    }catch(err){
+        console.log(err);
+        res.status(400).send({error: "Error in delete room device"});
+
+    }
+
 });
 
 module.exports = router;

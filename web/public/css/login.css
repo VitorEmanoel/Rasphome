@@ -1,0 +1,78 @@
+html{
+    background-color: #80deea;
+}
+
+.login-box{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 25%;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    padding: 30px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 1px 1px 1px rgba(80,80,80,.8);
+}
+
+.login-box img{
+    max-width: 100%;
+    display: block;
+    margin: auto auto;
+}
+
+.login-box div{
+    display: flex;
+    flex-direction: column;
+}
+
+.login-box div div{
+    position: relative;
+    padding: 10px;
+}
+
+.login-box div div input{
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 5px;
+    font-size: 14px;
+    font-family: 'Roboto', Noto, sans-serif;
+    border-bottom: 2px solid #0288D1;
+}
+
+.login-box input[type=submit]{
+    outline: none;
+    border: none;
+    background-color: #758586;
+    padding: 10px 20px;
+    color: white;
+    display: block;
+    margin: 0 auto;
+    width: 30%;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.login-box input[type=submit]:hover{
+    background-color: #354546;
+}
+
+.login-box div div input + label{
+    position: relative;
+    font-family: 'Roboto', Noto, sans-serif;
+    top: 0;
+    left: 0;
+    color: #757575;
+    pointer-events: none;
+    transform: translate(0, -100%);
+    font-size: 17px;
+    transition: 0.5s;
+}
+
+
+.login-box div div input:focus ~ label, .login-box div div input:valid ~ label{
+    top: -25px;
+    left: 0;
+    font-size: 15px;
+}

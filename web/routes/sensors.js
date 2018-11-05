@@ -1,50 +1,60 @@
 const express = require("express");
-const database = require("../../database");
-const controller = require("../api/controller");
+const Sensors = require("../../database/models/sensors");
 
 let router = express.Router();
 
 
-router.get("/", (req, res) =>{
-    let collection = database.getDB().collection('sensors');
-    controller.GET(collection, null, function(err, result){
-        if(err) throw err;
-        res.send({"sensors": result});
-        res.status(200).end();
-    });
+router.get("/", async(req, res) =>{
+    try{
+        const sensors = await Sensors.find();
+        res.status(200).send({sensors});
+    }catch(err){
+        res.status(400).send({error: "Error in find sensors"});
+    }
 });
 
-router.get("/:id", (req, res) =>{
-    let collection = database.getDB().collection('sensors');
-    controller.GET(collection, req.params.id, function(err, result){
-        if(err) throw err;
-        res.send(result);
-        res.status(200).end();
-    })
+router.get("/:id", async(req, res) =>{
+    try{
+        const sensors = await Sensors.findOne({_id:req.params.id});
+        if(!sensors)
+            return res.status(404).send({error: "Sensor not found"});
+        res.status(200).send({sensors});
+    }catch(err){
+        res.status(400).send({error: "Error in find sensors"})
+    }
 });
 
-router.post("/", (req, res) =>{
-    let collection = database.getDB().collection('sensors');
-    controller.POST(collection, req.body, function(err){
-        if(err) throw err;
-        res.status(201).end();
-    })
+router.post("/", async(req, res) =>{
+    try{
+        if(await Sensors.findOne({pin:req.body.pin}))
+            return res.status(400).send({error: "This pin in use"});
+        const sensors = await Sensors.create(req.body);
+        res.status(201).send({sensors});
+    }catch(err){
+        res.status(400).send({error: "Error in create sensor"});
+    }
 });
 
-router.delete("/:id", (req, res) =>{
-    let collection = database.getDB().collection('sensors');
-    controller.DELETE(collection, req.params.id, function(err){
-        if(err) throw err;
-        res.status(200).end();
-    });
+router.delete("/:id", async(req, res) =>{
+   try{
+       if(!await Sensors.findOne({_id: req.params.id}))
+           return res.status(404).send({error: "Sensor not found"});
+       await Sensors.deleteOne({_id:req.params.id});
+       res.status(200).send(await Sensors.find());
+   }catch(err){
+       res.status(400).send({error: "Error in delete sensor"})
+   }
 });
 
-router.put("/:id", (req, res) =>{
-    let collection = database.getDB().collection('sensors');
-    controller.PUT(collection, req.params.id, req.body, function(err){
-       if(err) throw err;
-       res.status(200).end();
-    });
+router.put("/:id", async(req, res) =>{
+    try{
+        if(!await Sensors.findOne({_id:req.params.id}))
+            return res.status(404).send({error: "Sensor not found"});
+        await Sensors.update({_id:req.params.id}, req.body);
+        res.status(200).send(await Sensors.findOne({_id:req.params.id}));
+    }catch(err){
+        res.status(400).send({error: {msg:"Error in update sensor", erro: err}})
+    }
 });
 
 module.exports = router;
