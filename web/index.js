@@ -9,6 +9,7 @@ const actuatorsRouter = require('./routes/actuators');
 const sensorsRouter = require('./routes/sensors');
 const indexRouter = require("./routes/index");
 const roomsRouter = require("./routes/rooms");
+const authRouter = require("./routes/auth");
 
 let app = express();
 
@@ -36,6 +37,7 @@ app.use("/", indexRouter);
 app.use("/api/actuators", actuatorsRouter);
 app.use("/api/sensors", sensorsRouter);
 app.use("/api/rooms", roomsRouter);
+app.use("/auth", authRouter);
 
 app.use(function(req, res, next) {
     next(createError(404));
