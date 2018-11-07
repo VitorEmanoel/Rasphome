@@ -1,7 +1,0 @@
-function showMenu(){
-
-}
-
-function hideMenu(){
-
-}

@@ -1,24 +1,37 @@
-<html>
+<!DOCTYPE html>
+<html lang="pt-br">
+
 <head>
-    <title>Rasphome</title>
-    <link href="/stylesheets/style.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <link href="./css/login.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="./scripts/mainScript.js"></script>
+    <title>Rasphome - Login</title>
 </head>
+
 <body>
-    <h1>Login site</h1>
-    <form>
-        <div class="login-box">
-            <div class="login-box-in">
-                <span>Usuário:</span>
-                <input type="text" name="user">
-            </div>
-            <div class="login-box-in">
-                <span>Senha:</span>
-                <input type="password" name="password">
-            </div>
-            <div class="login-box-button">
-                <button>Login</button>
-            </div>
+
+<div id="main">
+
+    <div class="login-box">
+        <img src="./icons/icon.png">
+        <div>
+            <form method="POST" action="/auth/">
+                <div>
+                    <input type="text" name="name" title="username" required="">
+                    <label>Usuário</label>
+                </div>
+                <div>
+                    <input type="password" name="password" title="password" required="">
+                    <label>Senha</label>
+                </div>
+                <input type="submit" name="submit" title="" value="Logar">
+            </form>
         </div>
-    </form>
+
+    </div>
+
+</div>
+
 </body>
 </html>

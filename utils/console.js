@@ -1,5 +1,5 @@
-var csi = '\033['
-var color = '0m'
+var csi = '\033[';
+var color = '0m';
 
 var colors = {
 	black:'30m',
@@ -18,7 +18,7 @@ var colors = {
 	lightmagenta:'35;1m',
 	lightcyan:'36;1m',
 	white:'37;1m',
-}
+};
 var backgrounds = {
 	black:'40m',
 	red:'41m',
@@ -31,7 +31,7 @@ var backgrounds = {
 }
 
 function resetcolor(){
-    color = '0m'
+    color = '0m';
     process.stdout.write(csi + '0m')
 }
 
@@ -40,7 +40,7 @@ function clear(){
 }
 
 function setcolor(pcolor){
-    process.stdout.write(csi + pcolor)
+    process.stdout.write(csi + pcolor);
     color = pcolor
 }
 
@@ -53,7 +53,8 @@ function move(x, y){
 }
 
 function colormessage(message, pcolor){
-    return csi + pcolor + '' + message + '' + csi + color
+    return csi + pcolor + '' + message + '' + csi + color;
+	resetcolor();
 }
 
 function cursor(visible){
@@ -64,12 +65,12 @@ function cursor(visible){
     }
 }
 
-module.exports.colormessage = colormessage
-module.exports.cursor = cursor
-module.exports.move = move
-module.exports.resetcolor = resetcolor
-module.exports.setbackground = setbackground
-module.exports.setcolor = setcolor
-module.exports.clear = clear
-module.exports.colors = colors
-module.exports.backgrounds = backgrounds
+module.exports.colormessage = colormessage;
+module.exports.cursor = cursor;
+module.exports.move = move;
+module.exports.resetcolor = resetcolor;
+module.exports.setbackground = setbackground;
+module.exports.setcolor = setcolor;
+module.exports.clear = clear;
+module.exports.colors = colors;
+module.exports.backgrounds = backgrounds;
