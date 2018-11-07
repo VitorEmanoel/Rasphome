@@ -24,8 +24,12 @@ router.use((req, res, next) =>{
 
 });
 
-router.get("/", function(req, res){
+router.get("/", (req, res) =>{
     res.render('index');
+});
+
+router.get('/configuration', (req, res) =>{
+    res.render('configuration');
 });
 
 module.exports = router;

@@ -14,5 +14,8 @@ const ActuatorScheme = new mogoose.Schema({
 
 },{versionKey: false});
 
+
+
+
 const Actuators = mogoose.model('actuators', ActuatorScheme);
 module.exports = Actuators;
