@@ -1,6 +1,6 @@
 const express = require("express");
 const Actuators = require("../../database/models/actuators");
-//const pinController = require('../controller/pinController');
+const GPIO = require('../controller/GPIO');
 
 let router = express.Router();
 
@@ -36,21 +36,32 @@ router.post("/", async(req, res) =>{
 });
 
 
-/*
-router.post("/:id/enable", (req, res) =>{
-   let collection = database.getDB().collection('actuators');
-   let enable = pinController.ENABLE(collection, req.params.id);
-   enable.catch(err => {throw err});
-   enable.then(() => {res.status(200).end();});
+
+router.post("/:id/enable", async (req, res) =>{
+    try {
+        const actuator = await Actuators.findOne({_id: req.params.id});
+        if(!actuator)
+            res.status(404).send({error : "Actuator not found"});
+        const gpio = new GPIO(actuator.pin);
+        gpio.active().then(() =>res.status(200).end()).catch(() => res.status(400).send({error: "Error in enable actuator"}));
+
+    }catch(err){
+        res.status(400).end({error : "Error in enable actuator"})
+    }
 });
 
-router.post("/:id/disable", (req, res) =>{
-    let collection = database.getDB().collection('actuators');
-    let enable = pinController.DISBALE(collection, req.params.id);
-    enable.catch(err =>{ throw err});
-    enable.then(() => {res.status(200).end()});
+router.post("/:id/disable", async (req, res) =>{
+    try {
+        const actuator = await Actuators.findOne({_id: req.params.id});
+        if(!actuator)
+            res.status(404).send({error : "Actuator not found"});
+        const gpio = new GPIO(actuator.pin);
+        gpio.deactive().then(() =>res.status(200).end()).catch(() => res.status(400).send({error: "Error in enable actuator"}));
+
+    }catch(err){
+        res.status(400).end({error : "Error in enable actuator"})
+    }
 });
-*/
 
 router.delete("/:id", async(req, res) =>{
     try{
