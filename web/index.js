@@ -3,7 +3,10 @@ const myconsole = require('../utils/console');
 const colors = myconsole.colors;
 const createError = require('http-errors');
 const express = require("express");
+const cookieParser = require('cookie-parser');
 const path = require('path');
+const session = require('express-session');
+const secretKey = require('../config/config').secret_key;
 
 const actuatorsRouter = require('./routes/actuators');
 const sensorsRouter = require('./routes/sensors');
@@ -33,11 +36,26 @@ app.use(cors);
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use("/", indexRouter);
+app.use(cookieParser(secretKey));
+app.use(session({
+    key: 'user_token',
+    secret: secretKey,
+    resave: false,
+    saveUninitialized: false,
+    cookie:{
+
+    }
+}));
 app.use("/api/actuators", actuatorsRouter);
 app.use("/api/sensors", sensorsRouter);
 app.use("/api/rooms", roomsRouter);
 app.use("/auth", authRouter);
+app.use((req, res, next)=>{
+    if(!req.session.token)
+        res.clearCookie('user_token');
+    next();
+});
+app.use("/", indexRouter);
 
 app.use(function(req, res, next) {
     next(createError(404));

@@ -17,11 +17,13 @@ const UserSchema = new mongoose.Schema({
 
 });
 
-UserSchema.pre('save', async(next) =>{
+UserSchema.pre('save', async function(next){
 
     this.password = await crypt.hash(this.password, 10);
     next();
 
 });
 
-module.exports = UserSchema;
+const User = mongoose.model('user', UserSchema);
+
+module.exports = User;

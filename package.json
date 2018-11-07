@@ -24,11 +24,15 @@
   "author": "VitorEmanoel",
   "license": "GPL-3.0",
   "dependencies": {
+    "@types/jsonwebtoken": "^8.3.0",
     "@types/mongoose": "^5.3.0",
     "bcrypt": "^3.0.2",
+    "cookie-parser": "^1.4.3",
     "dotenv": "^6.1.0",
     "express": "^4.16.3",
+    "express-session": "^1.15.6",
     "http-errors": "^1.7.1",
+    "jsonwebtoken": "^8.3.0",
     "mongoose": "^5.3.9",
     "onoff": "^3.2.2",
     "twig": "^1.12.0"
