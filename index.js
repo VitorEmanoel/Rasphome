@@ -17,12 +17,12 @@ function start(){
     myconsole.clear();
     myconsole.setcolor(myconsole.colors.white);
     webservice.start();
-    mongodb.open()
+    mongodb.start()
 }
 
 function stop(){
     myconsole.clear();
-    mongodb.close();
+    mongodb.stop();
     webservice.stop();
     process.exit(0)
 }

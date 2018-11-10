@@ -61,6 +61,20 @@ html{
     font-size: 20px;
 }
 
+.navBarItem .subtitle img{
+    max-width: 100%;
+    vertical-align: sub;
+    padding-right: 2px;
+}
+
+.navBarItem .subtitle{
+    padding: 10px;
+    font-family: 'Roboto', Noto, sans-serif;
+    color: #FFFFFF;
+    font-size: 18px;
+}
+
+
 .navBar .navBarItem .name:hover{
     background-color: #0288D1;
     cursor: pointer;
@@ -101,7 +115,7 @@ html{
     flex-direction: column;
 }
 
-.lateralMenu-in div a {
+.lateralMenu-in div{
     text-decoration: none;
     color: #FFFFFF;
     font-family: 'Roboto', Noto, sans-serif;

@@ -8,8 +8,7 @@ router.get('/login', function(req, res){
     res.render('login');
 });
 
-router.use((req, res, next) =>{
-
+verify = (req, res, next) =>{
     if(!req.session.token)
         return res.redirect("/login");
     jwt.verify(req.session.token, secretKey, (err, decoded)=> {
@@ -22,14 +21,26 @@ router.use((req, res, next) =>{
     });
     next();
 
-});
+};
 
-router.get("/", (req, res) =>{
+router.get("/", verify, (req, res) =>{
     res.render('index');
 });
 
-router.get('/configuration', (req, res) =>{
+router.get('/configuration', verify, (req, res) =>{
     res.render('configuration');
+});
+
+router.get("/rooms", verify, (req, res) =>{
+    res.render('rooms');
+});
+
+router.get('/sensors', verify, (req, res) =>{
+    res.render('sensors');
+});
+
+router.get('/actuators', verify, (req, res) =>{
+    res.render('actuators');
 });
 
 module.exports = router;

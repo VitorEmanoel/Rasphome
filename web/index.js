@@ -72,7 +72,7 @@ app.use((err, req, res, next) =>{
 function start(){
     myconsole.resetcolor();
     console.log(myconsole.colormessage('[WebService] ', colors.yellow) + 'Iniciado... ');
-    server = app.listen(process.env.PORT, (err) =>{
+    server = app.listen(8080, (err) =>{
         if(err){
             throw err;
         }

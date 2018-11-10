@@ -1,17 +1,28 @@
-function toggleMenu(){
-    let lateralMenu = document.getElementsByClassName("lateralMenu")[0];
-    let navBar = document.getElementsByClassName("navBar")[0];
-    let line = document.querySelector(".bottomBar line");
-    if(lateralMenu.style.width === '200px'){
-        lateralMenu.style.width = '0px';
-        navBar.style.marginLeft = '0px';
-        line.style.marginLeft = '0px';
+const host = "192.168.2.101";
+const port = 8080;
+const baseURL = `http://${host}:${port}`
+
+function handlerSwitchs(event){
+    if(event.target.checked){
+        fetch(`${baseURL}/api/actuators/${event.target.id}/enable`, 
+        {method: "POST"}).then(response => {
+            if(response.status !== 200)
+                return event.target.checked = false;
+        }).catch(err =>{
+            return event.target.checked = false;
+        })
     }else{
-        lateralMenu.style.width = '200px';
-        navBar.style.marginLeft = '200px';
-        line.style.marginLeft = '200px';
+        fetch(`${baseURL}/api/actuators/${event.target.id}/disable`, 
+        {method: "POST"}).then(response => {
+            if(response.status !== 200)
+                return event.target.checked = false;
+        }).catch(err =>{
+            return event.target.checked = false;
+        })
     }
+
 }
+
 let loader;
 window.onload = function(){
     loader = document.getElementsByClassName("loadCircle")[0];
@@ -23,23 +34,34 @@ window.onload = function(){
             let lateralMenu = document.getElementsByClassName("lateralMenu")[0];
             if(lateralMenu.style.width === '200px'){
                 toggleMenu();
+                return setTimeout(() =>{
+                    let line = document.querySelector(".bottomBar line");
+                    line.style.left = buttonInBar.offsetLeft + 'px';
+                    line.style.width = buttonInBar.offsetWidth + 'px';
+                    switch (buttonInBar.getAttribute("type")) {
+                        case "home":
+                            loaderHome();
+                            break;
+                        case "rooms":
+                            loaderRooms();
+                            break;
+                    }
+                }, 500);
+                
             }
-            setTimeout(() =>{
-                let line = document.querySelector(".bottomBar line");
-                line.style.left = buttonInBar.offsetLeft + 'px';
-                line.style.width = buttonInBar.offsetWidth + 'px';
-                switch (buttonInBar.getAttribute("type")) {
-                    case "home":
-                        loaderHome();
-                        break;
-                    case "rooms":
-                        loaderRooms();
-                        break;
-                }
-            }, 500);
+            let line = document.querySelector(".bottomBar line");
+            line.style.left = buttonInBar.offsetLeft + 'px';
+            line.style.width = buttonInBar.offsetWidth + 'px';
+            switch (buttonInBar.getAttribute("type")) {
+                case "home":
+                    loaderHome();
+                    break;
+                case "rooms":
+                    loaderRooms();
+                    break;
+            }
         });
     }
-
 };
 
 
@@ -57,8 +79,8 @@ async function loaderRooms() {
 }
 
 function loadSensors(){
-    fetch("http://localhost/api/sensors", { method: "GET" }).then(response => response.json()).then(json =>{
-        if(!json.sensors) return;
+    fetch(`${baseURL}/api/sensors`, { method: "GET" }).then(response => response.json()).then(json =>{
+        if(json.sensors.length < 1) return;
         let sensors = document.querySelector(".sensors");
         sensors.innerHTML = "";
         let div = document.createElement("div");
@@ -77,9 +99,9 @@ function loadSensors(){
 }
 
 function loadActuators() {
-    fetch("http://localhost/api/actuators", { method: "GET" }).then(response => response.json()).then(json =>{
+    fetch(`${baseURL}/api/actuators`, { method: "GET" }).then(response => response.json()).then(json =>{
         loader.style.visibility = 'hidden';
-        if(!json.actuators) return;
+        if(json.actuators.length < 1) return;
         json.actuators.map(actuators =>{
         });
     }).catch(error =>{
@@ -90,9 +112,9 @@ function loadActuators() {
 }
 
 function loadRooms() {
-    fetch("http://localhost/api/rooms", { method: "GET" }).then(response => response.json()).then(json =>{
+    fetch(`${baseURL}/api/rooms`, { method: "GET" }).then(response => response.json()).then(json =>{
         loader.style.visibility = 'hidden';
-        if(!json.rooms) return;
+        if(json.rooms.length < 1) return;
         let rooms = document.querySelector(".rooms");
         rooms.innerHTML = "";
         json.rooms.forEach((room) =>{
@@ -100,7 +122,7 @@ function loadRooms() {
             let title = document.createElement("title");
             title.innerText = room.name;
             firstdiv.appendChild(title);
-            if(room.devices) {
+            if(room.devices.length > 0) {
                 let seconddiv = document.createElement("div");
                 room.devices.forEach((device) => {
                     seconddiv.innerText = device.name;
@@ -108,9 +130,10 @@ function loadRooms() {
                     togglediv.className = 'switchToggle';
                     let input = document.createElement("input");
                     input.setAttribute("type", "checkbox");
-                    input.id = device.id;
+                    input.id = device._id;
+                    input.addEventListener('change', handlerSwitchs);
                     let labelToggle = document.createElement("label");
-                    labelToggle.setAttribute("for", device.id);
+                    labelToggle.setAttribute("for", device._id);
                     togglediv.appendChild(input);
                     togglediv.appendChild(labelToggle);
                     seconddiv.appendChild(togglediv);

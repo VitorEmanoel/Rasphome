@@ -8,10 +8,9 @@ const router = express.Router();
 
 router.post("/", async(req, res) =>{
     const {name, password } = req.body;
-    const user = await User.findOne({name}).select('+password');
+    const user = await User.findOne({name});
     if(!user)
         return res.status(404).send({error: "User not found"});
-
     if(!await crypt.compare(password, user.password))
         return res.status(400).send({error: "Invalid passowrd"});
 

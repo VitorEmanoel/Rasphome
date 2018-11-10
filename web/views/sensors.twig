@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Rasphome - Configurações</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="./css/style.css" rel="stylesheet">
+    <link href="./css/sensors.css" rel="stylesheet">
+    <script type="text/javascript" src="./scripts/script.js"></script>
+</head>
+<body>
+
+<div class="navBar">
+    <div class="navBarMenuItem" onclick="toggleMenu()">
+        <img src="./icons/menu_icon.png" width="24" height="24">
+    </div>
+    <div class="navBarItem">
+        <div class="name">Rasphome</div>
+        <div class="subtitle"> <img src="./icons/sensor_icon_white.png" /> Sensores</div>
+    </div>
+</div>
+<div class="lateralMenu" style="width: 0">
+    <div class="lateralMenu-in">
+        <div onclick="window.location.href='./'">
+            <img src="./icons/home_icon.png"> Inicio
+        </div>
+        <div onclick="window.location.href='./rooms'">
+            <img src="./icons/home_icon.png"> Salas
+        </div>
+        <div onclick="window.location.href='./actuators'">
+            <img src="./icons/light_icon_white.png"> Atuadores
+        </div>
+    </div>
+</div>
+</body>
+</html>

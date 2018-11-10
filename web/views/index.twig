@@ -5,7 +5,8 @@
     <title>Rasphome</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="./css/style.css" rel="stylesheet">
-    <script type="text/javascript" src="./scripts/mainScript.js"></script>
+    <script type="text/javascript" src="./scripts/indexScript.js"></script>
+    <script type="text/javascript" src="./scripts/script.js"></script>
 </head>
 <body>
 
@@ -28,11 +29,14 @@
 </div>
 <div class="lateralMenu" style="width: 0">
     <div class="lateralMenu-in">
-        <div>
-            <img src="./icons/home_icon.png"><a href="./">Inicio</a>
+        <div onclick="window.location.href='./rooms'">
+            <img src="./icons/home_icon.png"> Salas
         </div>
-        <div>
-            <img src="./icons/settings_icon.png"> <a href="./configuration">Configurações</a>
+        <div onclick="window.location.href='./actuators'">
+            <img src="./icons/light_icon_white.png"> Atuadores
+        </div>
+        <div onclick="window.location.href='./sensors'">
+            <img src="./icons/sensor_icon_white.png"> Sensores
         </div>
     </div>
 </div>
