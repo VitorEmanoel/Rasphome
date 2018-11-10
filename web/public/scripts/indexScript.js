@@ -2,53 +2,20 @@ const host = "192.168.2.101";
 const port = 8080;
 const baseURL = `http://${host}:${port}`
 
+let loader;
+let socket;
 function handlerSwitchs(event){
-    if(event.target.checked){
-        fetch(`${baseURL}/api/actuators/${event.target.id}/enable`, 
-        {method: "POST"}).then(response => {
-            if(response.status !== 200)
-                return event.target.checked = false;
-        }).catch(err =>{
-            return event.target.checked = false;
-        })
-    }else{
-        fetch(`${baseURL}/api/actuators/${event.target.id}/disable`, 
-        {method: "POST"}).then(response => {
-            if(response.status !== 200)
-                return event.target.checked = false;
-        }).catch(err =>{
-            return event.target.checked = false;
-        })
-    }
-
+    const id = event.target.id;
+    const value = event.target.checked;
+    socket.emit('actuator', {id, value});
 }
 
-let loader;
-window.onload = function(){
-    loader = document.getElementsByClassName("loadCircle")[0];
-    loaderHome();
-    let bottomBar = document.querySelectorAll('.bottomBar div');
-    for(let i = 0; i < bottomBar.length; i++){
-        let buttonInBar = bottomBar[i];
-        buttonInBar.addEventListener('click', ()=> {
-            let lateralMenu = document.getElementsByClassName("lateralMenu")[0];
-            if(lateralMenu.style.width === '200px'){
-                toggleMenu();
-                return setTimeout(() =>{
-                    let line = document.querySelector(".bottomBar line");
-                    line.style.left = buttonInBar.offsetLeft + 'px';
-                    line.style.width = buttonInBar.offsetWidth + 'px';
-                    switch (buttonInBar.getAttribute("type")) {
-                        case "home":
-                            loaderHome();
-                            break;
-                        case "rooms":
-                            loaderRooms();
-                            break;
-                    }
-                }, 500);
-                
-            }
+function handlerButtonBar(event){
+    let lateralMenu = getElementsByClassName("lateralMenu")[0];
+    let buttonInBar = event.target;
+    if(lateralMenu.style.width === '200px'){
+        toggleMenu();
+        return setTimeout(() =>{
             let line = document.querySelector(".bottomBar line");
             line.style.left = buttonInBar.offsetLeft + 'px';
             line.style.width = buttonInBar.offsetWidth + 'px';
@@ -60,8 +27,29 @@ window.onload = function(){
                     loaderRooms();
                     break;
             }
-        });
+        }, 500);
     }
+    let line = document.querySelector(".bottomBar line");
+    line.style.left = buttonInBar.offsetLeft + 'px';
+    line.style.width = buttonInBar.offsetWidth + 'px';
+    switch (buttonInBar.getAttribute("type")) {
+        case "home":
+            loaderHome();
+            break;
+        case "rooms":
+            loaderRooms();
+            break;
+    }
+}
+
+window.onload = function(){
+    loader = document.getElementsByClassName("loadCircle")[0];
+    loaderHome();
+    socket = io(baseURL);
+    socket.on('actuatorUpdate', data =>{
+        const actuator = document.getElementById(data.id);
+        actuator.checked = data.value;
+    })
 };
 
 
@@ -131,6 +119,7 @@ function loadRooms() {
                     let input = document.createElement("input");
                     input.setAttribute("type", "checkbox");
                     input.id = device._id;
+                    input.checked = device.value;
                     input.addEventListener('change', handlerSwitchs);
                     let labelToggle = document.createElement("label");
                     labelToggle.setAttribute("for", device._id);

@@ -10,6 +10,11 @@ const ActuatorScheme = new mogoose.Schema({
         type: Number,
         unique: true,
         require: true
+    },
+    value: {
+        type: Boolean,
+        require: true,
+        default: false
     }
 
 },{versionKey: false});

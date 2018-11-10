@@ -35,36 +35,6 @@ router.post("/", async(req, res) =>{
     }
 });
 
-
-
-router.post("/:id/enable", async (req, res) =>{
-    try {
-        const actuator = await Actuators.findOne({_id: req.params.id});
-        if(!actuator)
-            res.status(404).send({error : "Actuator not found"});
-        const gpio = new GPIO(actuator.pin);
-        gpio.active().then(() =>res.send("Sucess")).catch((err) => console.log(err));
-
-    }catch(err){
-        console.log(err);
-        res.status(400).end({error : "Error in enable actuator"})
-    }
-});
-
-router.post("/:id/disable", async (req, res) =>{
-    try {
-        const actuator = await Actuators.findOne({_id: req.params.id});
-        if(!actuator)
-            res.status(404).send({error : "Actuator not found"});
-        const gpio = new GPIO(actuator.pin);
-        gpio.deactive().then(() =>res.send("Sucess")).catch((err) => console.log(err));
-
-    }catch(err){
-        console.log(err);
-        res.status(400).end({error : "Error in enable actuator"})
-    }
-});
-
 router.delete("/:id", async(req, res) =>{
     try{
         if(!Actuators.find({_id:req.params.id}))
